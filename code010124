@@ -1,0 +1,56 @@
+import random
+from art import logo, vs
+from game_data import data
+from replit import clear
+
+
+# Step 1: Generate A, B & C
+A = ""
+B = ""
+
+def generate_a():
+    global A
+    A = random.choice(data)
+    return A
+
+def generate_b():
+    global B
+    B = random.choice(data)
+    return B
+
+# Step 2: Check user input
+def check_user_input(guess, A, B):
+    if A['follower_count'] > B['follower_count']:
+        return guess == "a"
+    else:
+        return guess == "b"
+    
+# Step 3: Play Game
+def play_game():
+    print(logo)
+    score = 0
+    is_game_over = False
+    B = generate_b()
+
+    while not is_game_over:
+        A = B
+        B = generate_b()
+        while A == B:
+            B = generate_b()
+            
+        print(f"Compare A: {A['name']}, a {A['description']}, from {A['country']}")
+        print(vs)
+        print(f"Against B: {B['name']}, a {B['description']}, from {B['country']}")
+        guess = input(f"Who has more followers? Type 'A' or 'B': ").lower()
+        is_correct = check_user_input(guess, A, B)
+        clear()
+        print(logo)
+        
+        if is_correct:
+            score += 1
+            print(f"You're right! Current score: {score}")
+        else:
+            is_game_over = True
+            print(f"Sorry, that's wrong. Final score: {score}")
+
+play_game()
